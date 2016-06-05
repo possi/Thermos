@@ -1,6 +1,6 @@
---- ../src-base/minecraft/net/minecraft/network/rcon/RConThreadClient.java
-+++ ../src-work/minecraft/net/minecraft/network/rcon/RConThreadClient.java
-@@ -41,20 +41,21 @@
+--- ../src-base/minecraft/net/minecraft/network/rcon/RConThreadClient.java	2016-06-05 21:18:43.549445700 +0200
++++ ../src-work/minecraft/net/minecraft/network/rcon/RConThreadClient.java	2016-06-05 21:27:09.094645100 +0200
+@@ -41,11 +41,11 @@
  
      public void run()
      {
@@ -15,17 +15,21 @@
                  {
                      break;
                  }
- 
+@@ -53,13 +53,14 @@
                  BufferedInputStream bufferedinputstream = new BufferedInputStream(this.clientSocket.getInputStream());
                  int i = bufferedinputstream.read(this.buffer, 0, 1460);
--
--                if (10 > i)
-+                
+ 
+-                if (10 <= i)
 +                if (i < 10)
                  {
-+                    this.running = false; // Cauldron
-                     return;
-                 }
+                     byte b0 = 0;
+                     int j = RConUtils.getBytesAsLEInt(this.buffer, 0, i);
+ 
+                     if (j != i - 4)
+                     {
++                        this.running = false; // Cauldron
+                         return;
+                     }
  
 @@ -110,26 +111,23 @@
                      }
